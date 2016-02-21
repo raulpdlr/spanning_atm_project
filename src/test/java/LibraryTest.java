@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import spanning.atm.Library;
+
 import static org.junit.Assert.*;
 
 /*

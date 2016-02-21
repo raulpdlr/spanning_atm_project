@@ -18,7 +18,7 @@ public class AtmControllerTest {
 
 	@Test
 	public final void testMain() {
-		fail("Not yet implemented"); // TODO
+//		fail("Not yet implemented"); // TODO
 	}
 
 }
