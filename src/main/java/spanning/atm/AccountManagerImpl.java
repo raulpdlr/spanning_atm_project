@@ -19,11 +19,9 @@ import java.util.logging.Logger;
 public class AccountManagerImpl implements AccountManager{
 	private static final Logger logger = Logger.getLogger(AtmController.class.getName());
 	static private FileHandler loggerFile;
-	BufferedReader debugReader;
-	private Locale locale = Locale.US;
-	private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 	private final static BigDecimal smallestDepositWithdrawAmount = new BigDecimal("0.01");
 	private final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
+	private	BufferedReader debugReader;
 	
 	public AccountManagerImpl(){
 		try {
@@ -43,7 +41,7 @@ public class AccountManagerImpl implements AccountManager{
 	 */
 	public String getBalance(Account account){
 		String accountActionResult = "";
-		accountActionResult = "Your balance is: " + numberFormat.format(account.accountBalance);
+		accountActionResult = "Your balance is: " + account.getNumberFormat().format(account.accountBalance);
 		return accountActionResult;
 	}
 	
@@ -62,12 +60,12 @@ public class AccountManagerImpl implements AccountManager{
 			if(amountBigDecimal.compareTo(smallestDepositWithdrawAmount) == -1){
 				accountActionResult = INVALID_AMOUNT_PREPEND + amountBigDecimal;
 			} else if(account.getBalance().compareTo(amountBigDecimal) == -1){
-				accountActionResult = "Insufficient funds, account only has: " + numberFormat.format(account.getBalance());
+				accountActionResult = "Insufficient funds, account only has: " + account.getNumberFormat().format(account.getBalance());
 			} else{
 				BigDecimal newBalance = account.getBalance().subtract(amountBigDecimal);
 				account.setBalance(newBalance);
-				accountActionResult = "Successfully withdrew: " + numberFormat.format(amountBigDecimal) + ", your balance is: " + 
-										numberFormat.format(account.getBalance());
+				accountActionResult = "Successfully withdrew: " + account.getNumberFormat().format(amountBigDecimal) + ", your balance is: " + 
+						account.getNumberFormat().format(account.getBalance());
 			}		
 		}
 		
@@ -91,8 +89,8 @@ public class AccountManagerImpl implements AccountManager{
 			} else{
 				BigDecimal newBalance = account.getBalance().add(amountBigDecimal);
 				account.setBalance(newBalance);
-				accountActionResult = "Successfully deposited: " + numberFormat.format(amountBigDecimal) + ", your balance is: " + 
-										numberFormat.format(account.getBalance());			
+				accountActionResult = "Successfully deposited: " + account.getNumberFormat().format(amountBigDecimal) + ", your balance is: " + 
+						account.getNumberFormat().format(account.getBalance());			
 			}			
 		}
 		

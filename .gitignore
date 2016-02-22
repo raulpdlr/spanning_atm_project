@@ -47,3 +47,13 @@ Temporary Items
 .apdisk
 build/libs/spanning_atm_project.jar
 *.class
+*.lock
+*.bin
+build/classes/main/spanning/atm/AccountManagerImpl.class
+*.lock
+.gradle/2.11/taskArtifacts/fileHashes.bin
+build/classes/main/spanning/atm/AccountManagerImpl.class
+*.jar
+build/reports/tests/classes/AtmTest.html
+*.html
+build/test-results/TEST-AtmTest.xml
