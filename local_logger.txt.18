@@ -3,17 +3,6 @@
 <log>
 <record>
   <date>2016-02-22T09:49:55</date>
-  <millis>1456156195234</millis>
-  <sequence>0</sequence>
-  <logger>spanning.atm.AtmController</logger>
-  <level>WARNING</level>
-  <class>spanning.atm.AccountManagerImpl</class>
-  <method>getBigDecimalFromString</method>
-  <thread>1</thread>
-  <message>Invalid amount: </message>
-</record>
-<record>
-  <date>2016-02-22T09:49:55</date>
   <millis>1456156195244</millis>
   <sequence>1</sequence>
   <logger>spanning.atm.AtmController</logger>

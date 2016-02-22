@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +20,10 @@ public class AccountManagerImpl implements AccountManager{
 	private static final Logger logger = Logger.getLogger(AtmController.class.getName());
 	static private FileHandler loggerFile;
 	BufferedReader debugReader;
+	private Locale locale = Locale.US;
+	private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
+	private final static BigDecimal smallestDepositWithdrawAmount = new BigDecimal("0.01");
+	private final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
 	
 	public AccountManagerImpl(){
 		try {
@@ -29,6 +36,84 @@ public class AccountManagerImpl implements AccountManager{
 			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
 		}		
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see spanning.atm.AccountManager#getBalance(spanning.atm.Account)
+	 */
+	public String getBalance(Account account){
+		String accountActionResult = "";
+		accountActionResult = "Your balance is: " + numberFormat.format(account.accountBalance);
+		return accountActionResult;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see spanning.atm.AccountManager#withdrawMoney(java.lang.String, spanning.atm.Account)
+	 */
+	public synchronized String withdrawMoney(String amountString, Account account){
+		String accountActionResult = "";
+		BigDecimal amountBigDecimal = getBigDecimalFromString(amountString);
+		
+		if(amountBigDecimal == null){
+			accountActionResult = INVALID_AMOUNT_PREPEND + amountString;
+		} else{
+			// Cannot withdraw less than .01
+			if(amountBigDecimal.compareTo(smallestDepositWithdrawAmount) == -1){
+				accountActionResult = INVALID_AMOUNT_PREPEND + amountBigDecimal;
+			} else if(account.getBalance().compareTo(amountBigDecimal) == -1){
+				accountActionResult = "Insufficient funds, account only has: " + numberFormat.format(account.getBalance());
+			} else{
+				BigDecimal newBalance = account.getBalance().subtract(amountBigDecimal);
+				account.setBalance(newBalance);
+				accountActionResult = "Successfully withdrew: " + numberFormat.format(amountBigDecimal) + ", your balance is: " + 
+										numberFormat.format(account.getBalance());
+			}		
+		}
+		
+		return accountActionResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see spanning.atm.AccountManager#depositMoney(java.lang.String, spanning.atm.Account)
+	 */
+	public String depositMoney(String amountString, Account account){
+		String accountActionResult = "";
+		BigDecimal amountBigDecimal = getBigDecimalFromString(amountString);
+
+		if(amountBigDecimal == null){
+			accountActionResult = INVALID_AMOUNT_PREPEND + amountString;
+		} else{
+			// Cannot deposit less than .01
+			if(amountBigDecimal.compareTo(smallestDepositWithdrawAmount) == -1){
+				accountActionResult = INVALID_AMOUNT_PREPEND + amountBigDecimal;
+			} else{
+				BigDecimal newBalance = account.getBalance().add(amountBigDecimal);
+				account.setBalance(newBalance);
+				accountActionResult = "Successfully deposited: " + numberFormat.format(amountBigDecimal) + ", your balance is: " + 
+										numberFormat.format(account.getBalance());			
+			}			
+		}
+		
+		return accountActionResult;
+	}
+	
+	/**
+	 * Helper function to transform the user entered String into a BigDecimal
+	 * @param input String which represents a number
+	 * @return The converted BigDecimal number of the input or null if invalid.
+	 */
+	private static BigDecimal getBigDecimalFromString(String input){
+		BigDecimal result = null;
+		try{
+			result = new BigDecimal(input);
+		} catch(NumberFormatException e){
+			String message = INVALID_AMOUNT_PREPEND + input;
+			logger.log(Level.WARNING, message);
+		}
+		return result;
+	}	
 	
 	/*
 	 * (non-Javadoc)
@@ -53,19 +138,19 @@ public class AccountManagerImpl implements AccountManager{
 				
 				switch(input){
 					case "1":	
-							atmActionResult = account.getBalance();
+							atmActionResult = this.getBalance(account);
 							System.out.println(atmActionResult);
 							break;
 					case "2":
 							System.out.println("How much to deposit?");
 							String depositAmountString = this.readLine(console);
-							atmActionResult = account.depositMoney(depositAmountString);
+							atmActionResult = this.depositMoney(depositAmountString, account);
 							System.out.println(atmActionResult);							
 							break;								
 					case "3":
 							System.out.println("How much to withdraw?");
 							String withdrawalAmountString = this.readLine(console);
-							atmActionResult = account.withdrawMoney(withdrawalAmountString);
+							atmActionResult = this.withdrawMoney(withdrawalAmountString, account);
 							System.out.println(atmActionResult);
 							break;							
 					case "4":

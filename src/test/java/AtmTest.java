@@ -37,11 +37,14 @@ public class AtmTest {
 	Locale locale;
 	NumberFormat numberFormat;
 	BigDecimal startingCash = new BigDecimal(10);
+	AccountManager accountManager;
 	
 	FileInputStream fileInputStream;
 	String outputFile;
 	PrintStream outputPrintStream;
 	private static final Logger logger = Logger.getLogger(AtmTest.class.getName());
+	
+	private final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
 	
 	@Before
 	public void setUp() throws Exception {
@@ -54,8 +57,9 @@ public class AtmTest {
 		invalidPin = 9999;
 		int pin = validPin;
 		BasicAccount account = new BasicAccount("Test Account", startingCash, pin);
-		account.setLogger(logger);
 		atmMachine.addAccount(pin, account);
+		
+		accountManager = new AccountManagerImpl();
 		
 		fileInputStream = new FileInputStream(new File("src" + File.separator + "test" + File.separator + 
 							"resources" + File.separator + "input" +  File.separator +"input.txt"));
@@ -84,8 +88,8 @@ public class AtmTest {
 	@Test
 	public final void testGetValidBalance() {
 		Account account = atmMachine.getAccount(validPin);
-
-		String balanceString = account.getBalance();
+			
+		String balanceString = accountManager.getBalance(account);
 		String expectedString = "Your balance is: " + numberFormat.format(startingCash);
 
 		if(!balanceString.equals(expectedString)){
@@ -99,7 +103,7 @@ public class AtmTest {
 		String input = "10";
 
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.add(depositAmount);		
 		String expectedString = "Successfully deposited: " + numberFormat.format(depositAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -115,7 +119,7 @@ public class AtmTest {
 		String input = "0.05";
 		
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.add(depositAmount);
 		String expectedString = "Successfully deposited: " + numberFormat.format(depositAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -131,7 +135,7 @@ public class AtmTest {
 		String input = "1.23";
 		
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.add(depositAmount);		
 		String expectedString = "Successfully deposited: " + numberFormat.format(depositAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -147,9 +151,9 @@ public class AtmTest {
 		String input = "0";
 		
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + depositAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + depositAmount;
 
 		if(!depositResult.equals(expectedString)){
 			fail("Not expecting to pass.");
@@ -161,9 +165,9 @@ public class AtmTest {
 		Account account = atmMachine.getAccount(validPin);
 		String input = "";
 		
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + input;
+		String expectedString = INVALID_AMOUNT_PREPEND + input;
 
 		if(!depositResult.equals(expectedString)){
 			fail("Not expecting to pass.");
@@ -176,9 +180,9 @@ public class AtmTest {
 		String input = "0.001";
 		
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + depositAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + depositAmount;
 
 		if(!depositResult.equals(expectedString)){
 			fail("Not expecting to pass.");
@@ -191,9 +195,9 @@ public class AtmTest {
 		String input = "-1";
 		
 		BigDecimal depositAmount = new BigDecimal(input); 
-		String depositResult = account.depositMoney(input);
+		String depositResult = accountManager.depositMoney(input, account);
 
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + depositAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + depositAmount;
 
 		if(!depositResult.equals(expectedString)){
 			fail("Wrong error message found.");
@@ -206,7 +210,7 @@ public class AtmTest {
 		String input = "1";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.subtract(withdrawAmount);		
 		String expectedString = "Successfully withdrew: " + numberFormat.format(withdrawAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -222,7 +226,7 @@ public class AtmTest {
 		String input = ".05";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.subtract(withdrawAmount);
 		String expectedString = "Successfully withdrew: " + numberFormat.format(withdrawAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -238,7 +242,7 @@ public class AtmTest {
 		String input = "9.87";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
 		BigDecimal expectedBalance = startingCash.subtract(withdrawAmount);
 		String expectedString = "Successfully withdrew: " + numberFormat.format(withdrawAmount) + ", your balance is: " + numberFormat.format(expectedBalance);
@@ -254,9 +258,9 @@ public class AtmTest {
 		String input = "0";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + withdrawAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + withdrawAmount;
 
 		if(!withdrawResult.equals(expectedString)){
 			fail("Wrong error message found.");
@@ -268,9 +272,9 @@ public class AtmTest {
 		Account account = atmMachine.getAccount(validPin);
 		String input = "";
 		
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + input;
+		String expectedString = INVALID_AMOUNT_PREPEND + input;
 
 		if(!withdrawResult.equals(expectedString)){
 			fail("Wrong error message found.");
@@ -283,9 +287,9 @@ public class AtmTest {
 		String input = "0.001";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + withdrawAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + withdrawAmount;
 
 		if(!withdrawResult.equals(expectedString)){
 			fail("Wrong error message found.");
@@ -298,9 +302,9 @@ public class AtmTest {
 		String input = "-1";
 		
 		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
-		String expectedString = BasicAccount.INVALID_AMOUNT_PREPEND + withdrawAmount;
+		String expectedString = INVALID_AMOUNT_PREPEND + withdrawAmount;
 
 		if(!withdrawResult.equals(expectedString)){
 			fail("Wrong error message found.");
@@ -312,8 +316,8 @@ public class AtmTest {
 		Account account = atmMachine.getAccount(validPin);
 		String input = "100";
 		
-		BigDecimal withdrawAmount = new BigDecimal(input); 
-		String withdrawResult = account.withdrawMoney(input);
+		new BigDecimal(input); 
+		String withdrawResult = accountManager.withdrawMoney(input, account);
 		
 		String expectedString = "Insufficient funds, account only has: " + numberFormat.format(startingCash);
 

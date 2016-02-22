@@ -36,19 +36,16 @@ public class AtmMachine {
 		int pin = 1234;
 		BigDecimal startingCash = new BigDecimal(10);
 		BasicAccount account = new BasicAccount("John", startingCash, pin);
-		account.setLogger(logger);
 		accounts.put(pin, account);
 		
 		pin = 5678;
 		startingCash = new BigDecimal(100);
 		account = new BasicAccount("Tim", startingCash, pin);
-		account.setLogger(logger);
 		accounts.put(pin, account);
 		
 		pin = 9999;
 		startingCash = new BigDecimal(1000);
 		account = new BasicAccount("Sarah", startingCash, pin);
-		account.setLogger(logger);
 		accounts.put(pin, account);
 	}
 	
