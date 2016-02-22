@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
- * Interface to define an ATM account and all the actions that can be done to it.
+ * Interface to define an ATM account
  * @author Raul
  *
  */

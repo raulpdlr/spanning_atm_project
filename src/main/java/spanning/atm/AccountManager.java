@@ -3,6 +3,10 @@ package spanning.atm;
 import java.io.Console;
 import java.io.IOException;
 
+/**
+ * Interface which will allow account management
+ * @author Raul
+ */
 public interface AccountManager {
 	
 	/**
