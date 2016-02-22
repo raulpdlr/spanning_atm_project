@@ -1,13 +1,8 @@
 package spanning.atm;
 
 
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,14 +13,14 @@ import java.util.logging.Logger;
  */
 public class BasicAccount implements Account {
 
-	String name;
-	BigDecimal accountBalance;
-	int pin;
-	Locale locale = Locale.US;
+	public final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
+	
+	private String name;
+	private BigDecimal accountBalance;
+	private int pin;
+	private Locale locale = Locale.US;
 	private final NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);
 	private final static BigDecimal smallestDepositWithdrawAmount = new BigDecimal("0.01");
-	public final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
-	BufferedReader debugReader;
 	private static Logger logger = null;
 	
 	public void setLogger(Logger logger){
@@ -125,74 +120,5 @@ public class BasicAccount implements Account {
 		return result;
 	}	
 	
-	/*
-	 * (non-Javadoc)
-	 * @see spanning.atm.Account#manageAccount(java.io.Console)
-	 */
-	public void manageAccount(Console console) throws IOException{
-		boolean exit = false;
-		do{
-			System.out.println("Hello " + this.name);
-			System.out.println("Actions:");
-			System.out.println("1: Get Balance");
-			System.out.println("2: Deposit Money");
-			System.out.println("3: Withdraw Money");
-			System.out.println("4: Exit");
-			
-			String input = null;
-			try{
-				
-				input = this.readLine(console);
-				
-				String atmActionResult = "";
-				
-				switch(input){
-					case "1":	
-							atmActionResult = this.getBalance();
-							System.out.println(atmActionResult);
-							break;
-					case "2":
-							System.out.println("How much to deposit?");
-							String depositAmountString = this.readLine(console);
-							atmActionResult = this.depositMoney(depositAmountString);
-							System.out.println(atmActionResult);							
-							break;								
-					case "3":
-							System.out.println("How much to withdraw?");
-							String withdrawalAmountString = this.readLine(console);
-							atmActionResult = this.withdrawMoney(withdrawalAmountString);
-							System.out.println(atmActionResult);
-							break;							
-					case "4":
-							System.out.println("Goodbye!");
-							exit = true;
-							break;
-					default:
-							System.out.println("Not a valid number option, try again.");			
-				}
-			} catch(InputMismatchException e){
-				String message = "Input must be a number 1-4";
-				logger.log(Level.INFO, message);
-				System.out.println(message);
-			}
-		} while(!exit);
-	}
-	
-	/**
-	 * Helper function to read input from the console
-	 * @param console Console handler for input
-	 * @return Next line read from console
-	 * @throws IOException Exception thrown in the case that the debug BufferedRead cannot be configured.
-	 */
-	private String readLine(Console console) throws IOException {
-	    if (console != null) {
-	        return console.readLine();
-	    } else{
-	    	if(debugReader == null){
-			    debugReader = new BufferedReader(new InputStreamReader(System.in));	    		
-	    	} 
 
-		    return debugReader.readLine();	    	
-	    }
-	}
 }

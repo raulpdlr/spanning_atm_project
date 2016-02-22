@@ -33,12 +33,6 @@ public interface Account {
 	 */
 	public String depositMoney(String amount);
 	
-	/**
-	 * Function to enter the interactive management console.
-	 * @param console Console handler which the user can interact with for input
-	 * @throws IOException
-	 */
-	public void manageAccount(Console console) throws IOException;
 	
 	public String getName();
 }

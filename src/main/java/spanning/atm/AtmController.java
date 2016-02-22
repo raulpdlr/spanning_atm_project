@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Object which holds input to the ATM system via static void main()
+ * Object which allows entry into the ATM system
  * @author Raul
  */
 public class AtmController {
@@ -34,6 +34,7 @@ public class AtmController {
 		}
 
 		AtmMachine atmMachine = new AtmMachine();
+		AccountManager accountManager = new AccountManagerImpl();
 		atmMachine.init();
 		
 		Console console = System.console();
@@ -64,7 +65,7 @@ public class AtmController {
 						System.out.println("Account not found, try again: ");
 					} else{
 						try {
-							account.manageAccount(console);
+							accountManager.manageAccount(console, account);
 						} catch (IOException e) {
 							logger.log(Level.SEVERE, "Unable to manage account with console");
 						}

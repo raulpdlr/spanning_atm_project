@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class AtmMachine {
 
-	Map<Integer, Account> accounts = new HashMap<Integer, Account>();
+	private Map<Integer, Account> accounts = new HashMap<Integer, Account>();
 	static private FileHandler loggerFile;
 	private static final Logger logger = Logger.getLogger(AtmMachine.class.getName());
 	

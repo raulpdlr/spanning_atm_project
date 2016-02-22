@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="AtmTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2016-02-22T00:50:58" hostname="raulxps" time="0.053">
+<testsuite name="AtmTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2016-02-22T01:05:32" hostname="raulxps" time="0.033">
   <properties/>
-  <testcase name="testWithdrawValidMoneyDollarAndCents" classname="AtmTest" time="0.019"/>
+  <testcase name="testWithdrawValidMoneyDollarAndCents" classname="AtmTest" time="0.012"/>
   <testcase name="testDepositInvalidMoneyLessThanOneCent" classname="AtmTest" time="0.0"/>
-  <testcase name="testBasicConsoleInteraction" classname="AtmTest" time="0.007"/>
+  <testcase name="testBasicConsoleInteraction" classname="AtmTest" time="0.006"/>
   <testcase name="testWithdrawInvalidMoneyNegative" classname="AtmTest" time="0.001"/>
   <testcase name="testDepositInvalidMoneyZero" classname="AtmTest" time="0.0"/>
   <testcase name="testWithdrawInvalidMoneyZero" classname="AtmTest" time="0.001"/>
-  <testcase name="testWithdrawValidMoneyOnlyCents" classname="AtmTest" time="0.001"/>
+  <testcase name="testWithdrawValidMoneyOnlyCents" classname="AtmTest" time="0.0"/>
   <testcase name="testDepositValidMoneyDollarAndCents" classname="AtmTest" time="0.001"/>
   <testcase name="testDepositInvalidMoneyNegativeAmount" classname="AtmTest" time="0.0"/>
   <testcase name="testDepositValidMoneyOnlyCents" classname="AtmTest" time="0.001"/>
   <testcase name="testGetValidBalance" classname="AtmTest" time="0.0"/>
   <testcase name="testDepositValidMoneyWholeDollar" classname="AtmTest" time="0.001"/>
-  <testcase name="testWithdrawInvalidMoneyBlank" classname="AtmTest" time="0.007"/>
-  <testcase name="testGetAccountInvalidPin" classname="AtmTest" time="0.005"/>
+  <testcase name="testWithdrawInvalidMoneyBlank" classname="AtmTest" time="0.005"/>
+  <testcase name="testGetAccountInvalidPin" classname="AtmTest" time="0.0"/>
   <testcase name="testWithdrawValidMoneyWholeDollar" classname="AtmTest" time="0.001"/>
   <testcase name="testWithdrawTooMuchMoney" classname="AtmTest" time="0.001"/>
-  <testcase name="testGetAccountValidPin" classname="AtmTest" time="0.0"/>
-  <testcase name="testDepositInvalidMoneyBlank" classname="AtmTest" time="0.002"/>
-  <testcase name="testWithdrawInvalidMoneyLessThanOneCent" classname="AtmTest" time="0.002"/>
+  <testcase name="testGetAccountValidPin" classname="AtmTest" time="0.001"/>
+  <testcase name="testDepositInvalidMoneyBlank" classname="AtmTest" time="0.001"/>
+  <testcase name="testWithdrawInvalidMoneyLessThanOneCent" classname="AtmTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[Feb 21, 2016 6:50:58 PM spanning.atm.BasicAccount getBigDecimalFromString
+  <system-err><![CDATA[Feb 21, 2016 7:05:32 PM spanning.atm.BasicAccount getBigDecimalFromString
 WARNING: Invalid amount: 
-Feb 21, 2016 6:50:58 PM spanning.atm.BasicAccount getBigDecimalFromString
+Feb 21, 2016 7:05:32 PM spanning.atm.BasicAccount getBigDecimalFromString
 WARNING: Invalid amount: 
 ]]></system-err>
 </testsuite>

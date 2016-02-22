@@ -19,6 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import spanning.atm.Account;
+import spanning.atm.AccountManager;
+import spanning.atm.AccountManagerImpl;
 import spanning.atm.BasicAccount;
 import spanning.atm.AtmController;
 import spanning.atm.AtmMachine;
@@ -328,12 +330,13 @@ public class AtmTest {
 @Test
 public final void testBasicConsoleInteraction() throws IOException{
 	Account account = atmMachine.getAccount(validPin);
+	AccountManager accountManager = new AccountManagerImpl();
 	
 	Console console = System.console();
 	System.setIn(fileInputStream);
 	System.setOut(outputPrintStream);
 	
-	account.manageAccount(console);
+	accountManager.manageAccount(console, account);
 	
 	String outputResult = readFile(outputFile, Charset.forName("utf-8"));
 	
