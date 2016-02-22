@@ -2,21 +2,37 @@ package spanning.atm;
 
 
 import java.io.Console;
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.Scanner;
+import java.io.IOException;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Object which holds input to the ATM system via static void main()
+ * @author Raul
+ */
 public class AtmController {
 
-	boolean ideDebug = true;
-	private static final Logger log = Logger.getLogger(AtmController.class.getName());
+	private static final Logger logger = Logger.getLogger(AtmController.class.getName());
+	static private FileHandler loggerFile;
+
 	private static final int shutdownPin = 111222333;
 	
+	/**
+	 * Main entry into the ATM system.
+	 * @param args
+	 */
 	public static void main(String[] args) {
+		try {
+			loggerFile = new FileHandler("local_logger.txt");
+			logger.addHandler(loggerFile);
+			logger.setUseParentHandlers(false); // Suppress logging to console.
+		} catch (SecurityException e) {
+			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
+		} catch (IOException e) {
+			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
+		}
+
 		AtmMachine atmMachine = new AtmMachine();
 		atmMachine.init();
 		
@@ -38,7 +54,7 @@ public class AtmController {
 				if(pinInt == shutdownPin){
 					shutdown = true;
 					String message = "Shutting down ATM machine";
-					log.log(Level.WARNING, message);
+					logger.log(Level.WARNING, message);
 					System.out.println(message);
 				} else{
 					Account account = null;
@@ -47,14 +63,18 @@ public class AtmController {
 					if(account == null){
 						System.out.println("Account not found, try again: ");
 					} else{
-						account.manageAccount(console);
+						try {
+							account.manageAccount(console);
+						} catch (IOException e) {
+							logger.log(Level.SEVERE, "Unable to manage account with console");
+						}
 					}					
 				}
 			} catch(NumberFormatException nfe){
 				String message = "Invalid input for PIN, only numbers allowed, cannot use PIN: " + pinString;
-				log.log(Level.WARNING, message);
+				logger.log(Level.WARNING, message);
 				System.out.println(message);
-			}			
+			}		
 		}
 	}
 }

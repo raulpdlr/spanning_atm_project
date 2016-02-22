@@ -1,30 +1,58 @@
 package spanning.atm;
 
 
-import java.io.Console;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
+/**
+ * Object which contains all the ATM user accounts
+ * @author Raul
+ */
 public class AtmMachine {
 
 	Map<Integer, Account> accounts = new HashMap<Integer, Account>();
+	static private FileHandler loggerFile;
+	private static final Logger logger = Logger.getLogger(AtmMachine.class.getName());
+	
+	public void setupLogger(){
+		try {
+			loggerFile = new FileHandler("local_logger.txt");
+			logger.addHandler(loggerFile);
+			logger.setUseParentHandlers(false);
+		} catch (SecurityException e) {
+			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
+		} catch (IOException e) {
+			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
+		}		
+	}	
 	
 	public void init(){
+		setupLogger();
+		
 		int pin = 1234;
 		BigDecimal startingCash = new BigDecimal(10);
-		Account account = new Account("John", startingCash, pin);
+		BasicAccount account = new BasicAccount("John", startingCash, pin);
+		account.setLogger(logger);
 		accounts.put(pin, account);
 		
 		pin = 5678;
 		startingCash = new BigDecimal(100);
-		account = new Account("Tim", startingCash, pin);
+		account = new BasicAccount("Tim", startingCash, pin);
+		account.setLogger(logger);
 		accounts.put(pin, account);
 		
 		pin = 9999;
 		startingCash = new BigDecimal(1000);
-		account = new Account("Sarah", startingCash, pin);
+		account = new BasicAccount("Sarah", startingCash, pin);
+		account.setLogger(logger);
+		accounts.put(pin, account);
+	}
+	
+	public void addAccount(Integer pin, Account account){
 		accounts.put(pin, account);
 	}
 	
