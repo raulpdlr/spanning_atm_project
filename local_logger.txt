@@ -2,25 +2,25 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2016-02-22T09:49:55</date>
-  <millis>1456156195234</millis>
+  <date>2016-02-27T08:09:12</date>
+  <millis>1456582152181</millis>
   <sequence>0</sequence>
   <logger>spanning.atm.AtmController</logger>
   <level>WARNING</level>
   <class>spanning.atm.AccountManagerImpl</class>
   <method>getBigDecimalFromString</method>
-  <thread>1</thread>
+  <thread>12</thread>
   <message>Invalid amount: </message>
 </record>
 <record>
-  <date>2016-02-22T09:49:55</date>
-  <millis>1456156195244</millis>
+  <date>2016-02-27T08:09:12</date>
+  <millis>1456582152193</millis>
   <sequence>1</sequence>
   <logger>spanning.atm.AtmController</logger>
   <level>WARNING</level>
   <class>spanning.atm.AccountManagerImpl</class>
   <method>getBigDecimalFromString</method>
-  <thread>1</thread>
+  <thread>12</thread>
   <message>Invalid amount: </message>
 </record>
 </log>

@@ -42,7 +42,6 @@ public class AtmTest {
 	FileInputStream fileInputStream;
 	String outputFile;
 	PrintStream outputPrintStream;
-	private static final Logger logger = Logger.getLogger(AtmTest.class.getName());
 	
 	private final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
 	

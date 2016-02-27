@@ -15,23 +15,8 @@ import java.util.logging.Logger;
 public class AtmMachine {
 
 	private Map<Integer, Account> accounts = new HashMap<Integer, Account>();
-	static private FileHandler loggerFile;
-	private static final Logger logger = Logger.getLogger(AtmMachine.class.getName());
-	
-	public void setupLogger(){
-		try {
-			loggerFile = new FileHandler("local_logger.txt");
-			logger.addHandler(loggerFile);
-			logger.setUseParentHandlers(false);
-		} catch (SecurityException e) {
-			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
-		} catch (IOException e) {
-			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
-		}		
-	}	
 	
 	public void init(){
-		setupLogger();
 		
 		int pin = 1234;
 		BigDecimal startingCash = new BigDecimal(10);

@@ -18,22 +18,9 @@ import java.util.logging.Logger;
  */
 public class AccountManagerImpl implements AccountManager{
 	private static final Logger logger = Logger.getLogger(AtmController.class.getName());
-	static private FileHandler loggerFile;
 	private final static BigDecimal smallestDepositWithdrawAmount = new BigDecimal("0.01");
 	private final static String INVALID_AMOUNT_PREPEND = "Invalid amount: ";
 	private	BufferedReader debugReader;
-	
-	public AccountManagerImpl(){
-		try {
-			loggerFile = new FileHandler("local_logger.txt");
-			logger.addHandler(loggerFile);
-			logger.setUseParentHandlers(false); // Suppress logging to console.
-		} catch (SecurityException e) {
-			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
-		} catch (IOException e) {
-			throw new RuntimeException("Problems configuring logger : " + e.getMessage());
-		}		
-	}
 	
 	/*
 	 * (non-Javadoc)

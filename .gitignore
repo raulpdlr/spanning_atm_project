@@ -57,3 +57,7 @@ build/classes/main/spanning/atm/AccountManagerImpl.class
 build/reports/tests/classes/AtmTest.html
 *.html
 build/test-results/TEST-AtmTest.xml
+*.txt
+*.8
+*.lock
+.gradle/2.11/taskArtifacts/fileHashes.bin
